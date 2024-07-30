@@ -1,8 +1,8 @@
-Problem Statement:
+# Problem Statement:
 
 In today's health-conscious world, consumers often find it challenging to understand the health implications of the ingredients listed on product labels. Manually reading and interpreting these labels can be time-consuming and confusing, especially when dealing with complex chemical names or unfamiliar ingredients. To address this, we propose developing a system that uses Tesseract OCR to read ingredients from product labels and pass this information through a language model (LLM) to provide personalized health advice based on the extracted ingredients.
 
-Objectives:
+# Objectives:
 
 OCR Detection: Use Tesseract OCR to accurately detect and extract text from product labels.
 Text Extraction: Ensure the extracted text accurately represents the ingredients listed on the label.
@@ -11,7 +11,7 @@ Health Advice Generation: Generate personalized health advice based on the ingre
 Response Display: Display the health advice in a user-friendly response box.
 Project Steps:
 
-OCR Detection:
+# OCR Detection:
 
 Use Tesseract OCR to detect text on product labels.
 Pre-process images to improve OCR accuracy (e.g., enhancing contrast, removing noise).
