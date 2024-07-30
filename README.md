@@ -44,3 +44,31 @@ Real-time Processing: Optimize for real-time text extraction and advice generati
 Expected Outcome:
 
 A user-friendly application that can take a photo of a product label, extract the ingredients using Tesseract OCR, analyze the ingredients using a language model, and provide clear and personalized health advice based on the extracted ingredients. This will help consumers make informed decisions about the products they purchase and consume.
+
+
+
+# backend  flow
+1) OCR detection
+2) extract the text from the image 
+3) pass it through the LLM(langchain or LlamaIndex)
+4) we can also use a fine tuned health model
+5) get the advise from the LLM 
+6) display it in the response box
+
+
+#   frontend needed
+1) image upload
+2) display the image
+3) display the response box
+4) display the health advise
+
+
+
+# The creativity of the project
+Practical Application: The project directly addresses a real-world problem: helping users make informed decisions about food consumption based on their health needs.
+Combination of Technologies: Effectively leveraging OCR and LLM together demonstrates a good understanding of both technologies and their potential synergies.
+Potential for Expansion: The core concept can be extended to analyze other product labels (e.g., cosmetics, household cleaning products) or to provide additional features like ingredient substitution suggestions.
+
+
+
+
