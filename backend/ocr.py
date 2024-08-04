@@ -17,15 +17,18 @@ def perform_ocr(img_path):
             cv2.putText(img, str(confidence), (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
 
     print(text)
+    
     cv2.imshow("Image", img)
     cv2.waitKey(0)
-    cv2.destroyAllWindows()  
+    cv2.destroyAllWindows()
+
     
 
         
 
 
 image_path = r"C:\Users\vedant raikar\Desktop\ocr health project\tesseract-ocr-project\test files\testimg.jpg"
-perform_ocr(image_path)
+image , text  = perform_ocr(image_path)
+
 
 
