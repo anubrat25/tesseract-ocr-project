@@ -5,7 +5,7 @@ import pytesseract
 def perform_ocr(img_path):
     pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
     img = cv2.imread(img_path)
-    img = cv2.resize(img , (500 , 500))
+    img = cv2.resize(img , (800 , 500))
     text = pytesseract.image_to_string(img)
     data = pytesseract.image_to_data(img , output_type=pytesseract.Output.DICT)
     n_boxes = len(data['level'])
@@ -17,7 +17,6 @@ def perform_ocr(img_path):
             cv2.putText(img, str(confidence), (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
 
     print(text)
-    
     cv2.imshow("Image", img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
@@ -27,7 +26,7 @@ def perform_ocr(img_path):
         
 
 
-image_path = r"C:\Users\vedant raikar\Desktop\ocr health project\tesseract-ocr-project\test files\testimg.jpg"
+image_path = r"C:\Users\vedant raikar\Desktop\ocr health project\tesseract-ocr-project\test files\img7.webp"
 image , text  = perform_ocr(image_path)
 
 
