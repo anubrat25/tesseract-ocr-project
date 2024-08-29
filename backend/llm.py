@@ -1,14 +1,39 @@
+from groq import Groq
+from ocr import perform_ocr
+import os
+from dotenv import load_dotenv
+import json 
 
-from huggingface_hub import InferenceClient
+# Load environment variables from .env file
+load_dotenv()
 
-client = InferenceClient(
-    "meta-llama/Meta-Llama-3.1-8B-Instruct",
-    token="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",
-)
+# Get the API key from the environment variable
+key = os.getenv('API_KEY')
+client = Groq(api_key=key)
 
-for message in client.chat_completion(
-	messages=[{"role": "user", "content": "What is the capital of France?"}],
-	max_tokens=500,
-	stream=True,
-):
-    print(message.choices[0].delta.content, end="")
+def generate_content(prompt):
+    response = client.chat.completions.create(
+        
+    messages=[
+        {
+            "role": "system",
+            "content": "you are a health assistant"
+        },
+        
+        {"role": "user",
+               "content": prompt,}
+
+    ],
+
+    model="gemma-7b-it",# Or "Llama-3-8B" depending on your preference
+
+    )
+    return response
+
+image_path = r"C:\Users\vedant raikar\Desktop\ocr health project\tesseract-ocr-project\test files\img4.jpg"
+text = perform_ocr(image_path)
+text = text.rstrip('\n')
+output = generate_content("analyse this food ingredients:"+text)
+print(output)
+
+
