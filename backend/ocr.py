@@ -3,17 +3,22 @@ import cv2
 import pytesseract
 import numpy as np 
 
-#function to perform ocr 
-def perform_ocr(img_path):
-    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-    img = cv2.imread(img_path)
+# Function to preprocess the image
+def preprocess_image(img):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     img = cv2.resize(img, None, fx=1.2, fy=1.2, interpolation=cv2.INTER_CUBIC)
     kernel = np.ones((1, 1), np.uint8)
     img = cv2.dilate(img, kernel, iterations=1)
     img = cv2.erode(img, kernel, iterations=1)
     img = cv2.threshold(cv2.bilateralFilter(img, 5, 75, 75), 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
-    text = pytesseract.image_to_string(img)
+    return img
+
+#function to perform ocr 
+def perform_ocr(img_path):
+    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+    img = cv2.imread(img_path)
+    img = preprocess_image(img)
+    text = pytesseract.image_to_string(img, config='--oem 3 --psm 6') 
     #data = pytesseract.image_to_data(img , output_type=pytesseract.Output.DICT)
     #n_boxes = len(data['level'])
     #for i in range(n_boxes):
