@@ -15,8 +15,8 @@ def preprocess_image(img):
 
 #function to perform ocr 
 def perform_ocr(img_path):
-    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-    img = cv2.imread(img_path)
+    pytesseract.pytesseract.tesseract_cmd = r'\backend\tesseract.exe'
+    img = cv2.imread(img_path)  
     img = preprocess_image(img)
     text = pytesseract.image_to_string(img, config='--oem 3 --psm 6') 
     #data = pytesseract.image_to_data(img , output_type=pytesseract.Output.DICT)
@@ -27,7 +27,6 @@ def perform_ocr(img_path):
         #if confidence > 0: # Only consider confident detections
             #cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
             #cv2.putText(img, str(confidence), (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
-    
     return text
 
 #image_path = r"C:\Users\vedant raikar\Desktop\ocr health project\tesseract-ocr-project\test files\img7.webp"
