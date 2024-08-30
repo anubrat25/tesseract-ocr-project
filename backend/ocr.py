@@ -15,7 +15,7 @@ def preprocess_image(img):
 
 #function to perform ocr 
 def perform_ocr(img_path):
-    pytesseract.pytesseract.tesseract_cmd = "https://github.com/anubrat25/tesseract-ocr-project/blob/main/tesseract/tesseract.exe"
+    pytesseract.pytesseract.tesseract_cmd = r"C:\Users\vedant raikar\Desktop\ocr health project\tesseract-ocr-project\tesseract\tesseract.exe"
     img = cv2.imread(img_path)  
     img = preprocess_image(img)
     text = pytesseract.image_to_string(img, config='--oem 3 --psm 6') 
