@@ -5,8 +5,8 @@ import os
 from dotenv import load_dotenv
 import json 
 from concurrent.futures import ThreadPoolExecutor
-
-
+from context import get_relevant_articles
+from preprocess import key_extractor
 # Load environment variables from .env file
 load_dotenv()
 
@@ -68,10 +68,18 @@ def main():
         with ThreadPoolExecutor() as executor:
             ocr_future = executor.submit(perform_ocr, image_path)
             ocr_text = ocr_future.result()
+        
+        keys = key_extractor(ocr_text)
+        cont = []
+        for key in keys:
+            cont.append(get_relevant_articles(key))
+        
+        print(cont)
 
         # Generate content based on OCR text and user details
-        prompt = f"Analyze these food ingredients: {ocr_text} based on these user details: {user_details} and give a personalized response."
+        prompt = f"Analyze these food ingredients: {ocr_text} based on these user details: {user_details} and give a personalized response using this context {cont}."
         output = generate_content(prompt)
+
 
         # Print the personalized response
         # Display the personalized response
