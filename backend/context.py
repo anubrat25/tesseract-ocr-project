@@ -3,13 +3,13 @@ from bs4 import BeautifulSoup
 
 def get_relevant_articles(keywords):
     # News API endpoint
-    endpoint = "https://newsapi.org/v2/everything"
+    endpoint = "https://newsapi.org/v1/everything"
     api_key = "14ade100cceb421499d0418149172372"
     # Define query parameters
     params = {
         "q": keywords,
         "language": "en",
-        "pageSize": 5,  # Number of articles to retrieve
+        "pageSize": 10,  # Number of articles to retrieve
         "apiKey": api_key
     }
     

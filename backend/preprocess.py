@@ -1,17 +1,12 @@
-from yake import KeywordExtractor
+from sklearn.feature_extraction.text import TfidfVectorizer
 
-# Extract only keywords without scores
-def key_extractor(text):
-    # Create a KeywordExtractor instance
-    kw_extractor = KeywordExtractor(top=5, windowsSize=0)
-    # Extract keywords from the text
-    keywords = kw_extractor.extract_keywords(text)
-    # Extract just the keyword part from each (keyword, score) tuple
-    keywords_only = [keyword for keyword, score in keywords]
-    return keywords_only
+def tfidf_keywords(text, top_n=100):
+    vectorizer = TfidfVectorizer(stop_words="english")
+    tfidf_matrix = vectorizer.fit_transform([text])
+    feature_array = vectorizer.get_feature_names_out()
+    tfidf_sorting = tfidf_matrix.toarray().flatten().argsort()[::-1]
+    top_keywords = [feature_array[i] for i in tfidf_sorting[:top_n]]
+    return top_keywords
 
-# Text from which keywords will be extracted
-text = "YAKE (Yet Another Keyword Extractor) is a Python library for extracting keywords from text."
-l = key_extractor(text)
-print(l)
+
 
