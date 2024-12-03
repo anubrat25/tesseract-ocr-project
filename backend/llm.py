@@ -1,11 +1,11 @@
 import streamlit as st 
 from groq import Groq
-from ocr import perform_ocr
+from easy_ocr import perform_ocr_easyocr
 import os
 from dotenv import load_dotenv
-import json 
+
 from concurrent.futures import ThreadPoolExecutor
-from context import get_relevant_articles
+from context import fetch_wikipedia_context
 from preprocess import tfidf_keywords
 # Load environment variables from .env file
 load_dotenv()
@@ -30,11 +30,11 @@ def enter_details():
 
    
 #generating the output
-def generate_content(prompt):
+def generate_content(prompt , context):
     response = client.chat.completions.create(
         
     messages=[
-        {"role": "system","content": "you are a health assistant"},
+        {"role": "system","content": f"you are a health assistant with the following context {context}"},
         {"role": "user","content": prompt,}],
         model="llama-3.1-8b-instant",# Or "Llama-3-8B" depending on your preference
         )
@@ -66,22 +66,19 @@ def main():
 
         # Parallelize OCR processing
         with ThreadPoolExecutor() as executor:
-            ocr_future = executor.submit(perform_ocr, image_path)
+            ocr_future = executor.submit(perform_ocr_easyocr, image_path)
             ocr_text = ocr_future.result()
         
         keys = tfidf_keywords(ocr_text)
-        print(keys)
-        cont = []
-        for key in keys:
-            cont.append(get_relevant_articles(key))
         
-        print(cont)
-        p = f"Generate a concise summary of the {cont} , emphasizing key points related to health, food products, and their nutritional or functional elements. Focus on highlighting essential details that relate to health benefits, ingredients, and any significant properties or effects associated with these food products taking in consideration {keys} are present in the product."
-        conte =  generate_content(p)
+        print(keys)
+        cont = fetch_wikipedia_context(keys)
+        p = f"Generate a concise summary of the context, emphasizing key points related to health, food products, and their nutritional or functional elements. Focus on highlighting essential details that relate to health benefits, ingredients, and any significant properties or effects associated with these food products taking in consideration {keys} are present in the product."
+        conte =  generate_content(p , cont)
         print(conte)
         # Generate content based on OCR text and user details
-        prompt = f"Analyze the following food ingredients: {ocr_text}, taking into account the user’s dietary preferences, restrictions, and goals as outlined in these user details: {user_details}. Using this context {conte}, provide a detailed, personalized response highlighting any health benefits, potential concerns, or specific recommendations that align with the user’s needs and also give additional information related unfamiliar ingredients present and how it can be harmful "
-        output = generate_content(prompt)
+        prompt = f"Analyze the following food ingredients: {ocr_text}, taking into account the user’s dietary preferences, restrictions, and goals as outlined in these user details: {user_details}. Using this context, provide a detailed, personalized response highlighting any health benefits, potential concerns, or specific recommendations that align with the user’s needs and also give additional information related unfamiliar ingredients present and how it can be harmful "
+        output = generate_content(prompt , conte)
 
 
         # Print the personalized response
